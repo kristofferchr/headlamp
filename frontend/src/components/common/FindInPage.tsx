@@ -123,29 +123,15 @@ export default function FindInPage() {
     };
   }, []);
 
-  // Listen for Escape key to close
-  useEffect(() => {
-    const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
-        handleClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleGlobalKeyDown);
-    return () => {
-      document.removeEventListener('keydown', handleGlobalKeyDown);
-    };
-  }, [isOpen, handleClose]);
-
   // Trigger search when text changes
   useEffect(() => {
     if (searchText) {
-      handleSearch(true, false);
+      window.desktopApi?.send('find-in-page', { text: searchText, forward: true, findNext: false });
     } else {
       setFindResult(null);
       window.desktopApi?.send('stop-find-in-page', 'clearSelection');
     }
-  }, [searchText, handleSearch]);
+  }, [searchText]);
 
   if (!isOpen) {
     return null;
