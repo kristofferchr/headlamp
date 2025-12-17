@@ -53,6 +53,7 @@
     "EditorDialog": [Function],
     "EmptyContent": [Function],
     "ErrorPage": [Function],
+    "FindInPage": [Function],
     "HeaderLabel": [Function],
     "HoverInfoLabel": [Function],
     "InfoLabel": [Function],

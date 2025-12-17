@@ -40,6 +40,7 @@ const checkExports = [
   'Dialog',
   'EmptyContent',
   'ErrorPage',
+  'FindInPage',
   'InnerTable',
   'Label',
   'LabelListItem',
