@@ -117,11 +117,11 @@ export default function FindInPage() {
 
     const handleFoundInPage = (result: FindResult) => {
       setFindResult(result);
-      // Refocus input after search to prevent focus loss from findInPage scrolling
-      // Only refocus if not already focused to avoid interrupting user navigation
-      if (document.activeElement !== inputRef.current) {
+      // Always refocus input after search to prevent focus loss from findInPage scrolling
+      // Use setTimeout to ensure we refocus after any focus changes from findInPage
+      setTimeout(() => {
         inputRef.current?.focus();
-      }
+      }, 0);
     };
 
     window.desktopApi.receive('found-in-page', handleFoundInPage);
