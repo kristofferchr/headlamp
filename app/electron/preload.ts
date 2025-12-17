@@ -30,6 +30,8 @@ contextBridge.exposeInMainWorld('desktopApi', {
       'plugin-manager',
       'request-backend-token',
       'request-plugin-permission-secrets',
+      'find-in-page',
+      'stop-find-in-page',
     ];
     if (validChannels.includes(channel)) {
       ipcRenderer.send(channel, data);
@@ -48,6 +50,8 @@ contextBridge.exposeInMainWorld('desktopApi', {
       'backend-token',
       'plugin-permission-secrets',
       'open-about-dialog',
+      'open-find-in-page',
+      'found-in-page',
     ];
     if (validChannels.includes(channel)) {
       // Deliberately strip event as it includes `sender`

@@ -810,6 +810,15 @@ function getDefaultAppMenu(): AppMenu[] {
               selectAllMenu,
               sep,
               {
+                label: i18n.t('Find'),
+                id: 'original-find',
+                accelerator: 'CmdOrCtrl+F',
+                click: () => {
+                  mainWindow?.webContents.send('open-find-in-page');
+                },
+              },
+              sep,
+              {
                 label: i18n.t('Speech'),
                 id: 'original-speech',
                 submenu: [
@@ -826,7 +835,20 @@ function getDefaultAppMenu(): AppMenu[] {
                 ],
               },
             ]
-          : [deleteMenu, sep, selectAllMenu]),
+          : [
+              deleteMenu,
+              sep,
+              selectAllMenu,
+              sep,
+              {
+                label: i18n.t('Find'),
+                id: 'original-find',
+                accelerator: 'CmdOrCtrl+F',
+                click: () => {
+                  mainWindow?.webContents.send('open-find-in-page');
+                },
+              },
+            ]),
       ],
     },
     // { role: 'viewMenu' }
@@ -1413,6 +1435,28 @@ function startElecron() {
 
     ipcMain.on('request-backend-token', () => {
       mainWindow?.webContents.send('backend-token', backendToken);
+    });
+
+    // Find in page handlers
+    ipcMain.on('find-in-page', (event: IpcMainEvent, data: { text: string; forward?: boolean; findNext?: boolean }) => {
+      if (!mainWindow || !data?.text) {
+        return;
+      }
+      mainWindow.webContents.findInPage(data.text, {
+        forward: data.forward ?? true,
+        findNext: data.findNext ?? false,
+      });
+    });
+
+    ipcMain.on('stop-find-in-page', (event: IpcMainEvent, action: 'clearSelection' | 'keepSelection' | 'activateSelection') => {
+      if (!mainWindow) {
+        return;
+      }
+      mainWindow.webContents.stopFindInPage(action || 'clearSelection');
+    });
+
+    mainWindow.webContents.on('found-in-page', (event, result) => {
+      mainWindow?.webContents.send('found-in-page', result);
     });
 
     setupRunCmdHandlers(mainWindow, ipcMain);

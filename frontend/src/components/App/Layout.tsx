@@ -38,7 +38,7 @@ import store from '../../redux/stores/store';
 import { useUIPanelsGroupedBySide } from '../../redux/uiSlice';
 import { fetchStatelessClusterKubeConfigs, isEqualClusterConfigs } from '../../stateless/';
 import { ActivitiesRenderer } from '../activity/Activity';
-import { ErrorPage, Loader } from '../common';
+import { ErrorPage, FindInPage, Loader } from '../common';
 import ActionsNotifier from '../common/ActionsNotifier';
 import AlertNotification from '../common/AlertNotification';
 import DetailsDrawer from '../common/Resource/DetailsDrawer';
@@ -262,6 +262,7 @@ export default function Layout({}: LayoutProps) {
 
   return (
     <>
+      <FindInPage />
       <Link
         href="#main"
         sx={{
