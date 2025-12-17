@@ -32,6 +32,9 @@ interface FindResult {
   matches: number;
 }
 
+// Position below the MUI AppBar/Toolbar (default height 64px + 8px padding)
+const FIND_BAR_TOP_POSITION = 72;
+
 /**
  * A find-in-page search bar component for the Electron desktop app.
  * This component provides browser-like Cmd+F/Ctrl+F functionality.
@@ -114,8 +117,11 @@ export default function FindInPage() {
 
     const handleFoundInPage = (result: FindResult) => {
       setFindResult(result);
-      // Refocus input after search to prevent focus loss
-      inputRef.current?.focus();
+      // Refocus input after search to prevent focus loss from findInPage scrolling
+      // Only refocus if not already focused to avoid interrupting user navigation
+      if (document.activeElement !== inputRef.current) {
+        inputRef.current?.focus();
+      }
     };
 
     window.desktopApi.receive('found-in-page', handleFoundInPage);
@@ -145,7 +151,7 @@ export default function FindInPage() {
       data-find-in-page-bar
       sx={{
         position: 'fixed',
-        top: 72,
+        top: FIND_BAR_TOP_POSITION,
         right: 16,
         zIndex: 2000,
         display: 'flex',
