@@ -118,10 +118,10 @@ export default function FindInPage() {
     const handleFoundInPage = (result: FindResult) => {
       setFindResult(result);
       // Always refocus input after search to prevent focus loss from findInPage scrolling
-      // Use setTimeout to ensure we refocus after any focus changes from findInPage
+      // Use a longer timeout to ensure we refocus after Electron completes all focus changes
       setTimeout(() => {
         inputRef.current?.focus();
-      }, 0);
+      }, 50);
     };
 
     window.desktopApi.receive('found-in-page', handleFoundInPage);
