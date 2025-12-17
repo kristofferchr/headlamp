@@ -131,14 +131,23 @@ export default function FindInPage() {
     };
   }, []);
 
-  // Trigger search when text changes
+  // Trigger search when text changes (debounced to prevent focus loss during typing)
   useEffect(() => {
-    if (searchText) {
-      window.desktopApi?.send('find-in-page', { text: searchText, forward: true, findNext: false });
-    } else {
+    if (!searchText) {
       setFindResult(null);
       window.desktopApi?.send('stop-find-in-page', 'clearSelection');
+      return;
     }
+
+    // Debounce the search to avoid triggering findInPage on every keystroke
+    // which can cause focus loss during typing
+    const debounceTimer = setTimeout(() => {
+      window.desktopApi?.send('find-in-page', { text: searchText, forward: true, findNext: false });
+    }, 300);
+
+    return () => {
+      clearTimeout(debounceTimer);
+    };
   }, [searchText]);
 
   if (!isOpen) {
