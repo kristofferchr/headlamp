@@ -114,6 +114,8 @@ export default function FindInPage() {
 
     const handleFoundInPage = (result: FindResult) => {
       setFindResult(result);
+      // Refocus input after search to prevent focus loss
+      inputRef.current?.focus();
     };
 
     window.desktopApi.receive('found-in-page', handleFoundInPage);
@@ -140,10 +142,11 @@ export default function FindInPage() {
   return (
     <Paper
       elevation={4}
+      data-find-in-page-bar
       sx={{
         position: 'fixed',
-        top: 8,
-        right: 8,
+        top: 72,
+        right: 16,
         zIndex: 2000,
         display: 'flex',
         alignItems: 'center',
